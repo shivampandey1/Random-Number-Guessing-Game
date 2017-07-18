@@ -1,0 +1,131 @@
+//Name: Shivam
+//Purpose: Help user guess a random number correctly
+//Description: GUI that informs the user how close their guess is to a random number that has been generated
+package Randomnumbergame;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+//importing libraries
+public class Randomnumbergame extends JFrame implements ActionListener {
+    
+    JLabel displayResultlbl, title, instructionlbl, hintlbl;
+    JTextField guesstxtfld;
+    JButton enterbtn;
+    Container frame;
+    static int randomNumberInt, userEnteredInt;
+    static String userEntered;
+    //declaring variables
+    public Randomnumbergame  (){
+        
+        super ("Guessing Game");
+        frame = getContentPane ();
+        frame.setLayout(null);
+        
+            title = new JLabel ("Welcome to The Guessing Game");
+        displayResultlbl = new JLabel ("How close were you?");
+        instructionlbl = new JLabel ("Please enter a number between 0-100 and Lets see how close you were");
+        hintlbl = new JLabel ("Get your hint after first guess!");
+        
+        guesstxtfld = new JTextField ();
+        
+        enterbtn = new JButton ("Enter");
+        enterbtn.addActionListener(this);
+        
+        title.setFont(title.getFont().deriveFont(25.0f)); //learned from https://stackoverflow.com/questions/17884843/change-jlabel-font-size
+        instructionlbl.setFont(instructionlbl.getFont().deriveFont(13.0f));
+        displayResultlbl.setFont(displayResultlbl.getFont().deriveFont(25.0f));
+        //added components
+        
+        title.setBounds(60, 0, 500, 100);
+        
+        instructionlbl.setBounds(20,150,500,50);
+        guesstxtfld.setBounds (100,225,300,30);
+        hintlbl.setBounds(145,255,250,40);
+        enterbtn.setBounds(135,300,200,50);
+        displayResultlbl.setBounds(110,350,350,100);
+        //set bounds
+        frame.add(title);
+        frame.add(displayResultlbl);
+        frame.add(instructionlbl);
+        frame.add(guesstxtfld);
+        frame.add(enterbtn);
+        frame.add(hintlbl);
+        //added components to frame
+        
+        setSize(500,500);
+        setVisible(true);
+        setDefaultCloseOperation (EXIT_ON_CLOSE);
+        //set size
+    }
+    
+    @Override
+    public void actionPerformed (ActionEvent e)
+    {
+        int differenceInt;
+        if (userEnteredInt>randomNumberInt)
+        {
+            differenceInt = Math.abs(userEnteredInt-randomNumberInt);
+        }
+        else
+        {
+            differenceInt = Math.abs(randomNumberInt-userEnteredInt);
+        }
+        
+        userEntered = guesstxtfld.getText();
+        userEnteredInt = Integer.parseInt(userEntered);
+        
+        if (userEnteredInt == randomNumberInt)
+        {
+            displayResultlbl.setText("You Got it!");
+        }//congratulates user on correct respond
+        else if (differenceInt>50)
+        {
+            hintlbl.setText("Hint: Freezing");
+        }
+        else if (differenceInt>25 && differenceInt<=50)
+        {
+            hintlbl.setText("Hint: Cold");
+        }
+        else if(differenceInt>15 && differenceInt <=25)
+        {
+            hintlbl.setText("Hint: Cool");
+        }
+        else if (differenceInt >10 && differenceInt <=15)
+        {
+            hintlbl.setText("Hint: Warm");
+        }
+        else if (differenceInt >5 && differenceInt <=10)
+        {
+            hintlbl.setText("Hint: Hot");
+        }
+        else if (differenceInt >= 1 && differenceInt<=5)
+        {
+            hintlbl.setText("Hint: Boiling");
+        }//provides hints based on distance from number
+        if(userEnteredInt > randomNumberInt)
+        {
+            displayResultlbl.setText("Lower!");
+        }
+        else if (userEnteredInt == randomNumberInt){
+            displayResultlbl.setText("You got it!");
+            hintlbl.setText(" ");
+        }
+        else
+        {
+            displayResultlbl.setText("Higher!");
+        }
+        //indicates to increase or decrease
+        differenceInt = 0;
+        
+    }
+    
+    public static void main(String[] args) {
+        
+        randomNumberInt = (int)Math.ceil(Math.random()*100);
+        Randomnumbergame  launcher = new Randomnumbergame  ();
+        
+    }
+    
+}
